@@ -1,3 +1,4 @@
+from typing import Any
 from fastapi import FastAPI
 from pydantic import BaseModel, field_validator
 import joblib
@@ -21,7 +22,6 @@ class Prediction(BaseModel):
     @classmethod
     def round_to(cls, value: float) -> float:
         return round(value, 2)
-    
 
 
 #  Loads the model
@@ -36,13 +36,9 @@ app = FastAPI(
 )
 
 
-@app.post("/predict")
-def predict(data: ModelInput):
-    features = [[
-        data.rooms,
-        data.age,
-        data.distance
-    ]]
+@app.post("/predict", response_model=Prediction)
+def predict(data: ModelInput) -> Any:
+    features = [[data.rooms, data.age, data.distance]]
 
     prediction = model.predict(features)
 
