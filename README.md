@@ -19,3 +19,6 @@ Run `uvicorn main:app` to test locally.
 #### Ref
 
 * https://machinelearningmastery.com/the-machine-learning-practitioners-guide-to-model-deployment-with-fastapi/
+
+
+* https://betterstack.com/community/guides/scaling-python/uploading-files-using-fastapi/

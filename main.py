@@ -1,9 +1,13 @@
 from typing import Any
-from fastapi import FastAPI
+import shutil
+from pathlib import Path
+from fastapi import FastAPI, UploadFile, HTTPException
 from pydantic import BaseModel, field_validator
 import joblib
 import logging
 
+
+UPLOAD_DIR = Path("uploads")
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -48,3 +52,25 @@ def predict(data: ModelInput) -> Any:
 @app.get("/health")
 def health():
     return {"status": "OK"}
+
+
+# Trying out file upload
+@app.post("/upload/single")
+async def upload_single_file(file: UploadFile):
+    if file.filename == "":
+        raise HTTPException(status_code=400, detail="No file selected")
+
+    file_path = Path(UPLOAD_DIR, file.filename)
+
+    with open(file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    return {
+        "filename": file.filename,
+        "content_type": file.content_type,
+        "size": file.size,
+        "location": str(file_path),
+    }
+
+
+# TODO: Multiple file uploads to S3 with image resize etc using Pillow?

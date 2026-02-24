@@ -5,9 +5,13 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.14"
 dependencies = [
+    "boto3>=1.42.55",
     "fastapi[standard]>=0.128.0",
     "pandas>=3.0.0",
+    "pillow>=12.1.1",
     "pre-commit>=4.5.1",
+    "python-magic>=0.4.27",
+    "python-multipart>=0.0.22",
     "scikit-learn>=1.8.0",
 ]
 
